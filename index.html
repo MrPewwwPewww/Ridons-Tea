@@ -16,10 +16,14 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 1rem 0;
+            padding: 0.5rem 0;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif; /* Ensure the font style is applied */
+            margin: 0; /* Remove any default margin */
         }
         nav {
-            margin: 20px 0;
+            margin: 10px 0;
         }
         nav a {
             margin: 0 15px;
@@ -87,6 +91,10 @@
         }
         .promo-code {
             margin-top: 10px;
+        }
+        .qr-code {
+            margin-top: 20px;
+            text-align: center;
         }
 
         /* Mobile responsiveness */
@@ -221,10 +229,15 @@
             </div>
         </div>
     </section>
+
+    <div class="qr-code">
+        <h3>Scan to Visit Our Website</h3>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=200x200" alt="QR Code">
+    </div>
 </div>
 
 <footer>
-    <p>&copy; 2024 Ridon's Green Tea. All rights reserved.</p>
+    <p>© 2023 Ridon's Green Tea. All rights reserved.</p>
 </footer>
 
 <script>
