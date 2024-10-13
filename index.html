@@ -85,9 +85,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        .promo-code {
-            margin-top: 10px;
-        }
         /* Modal styles */
         #reviewModal {
             display: none;
@@ -160,13 +157,6 @@
         <h2>Your Shopping Cart</h2>
         <div id="cart-items"></div>
         <p>Total: $<span id="total-price">0.00</span></p>
-        
-        <div class="promo-code">
-            <label for="promo">Promo Code:</label>
-            <input type="text" id="promo" placeholder="Enter code">
-            <button onclick="applyPromo()">Apply</button>
-        </div>
-
         <div class="order-form">
             <h3>Order Confirmation</h3>
             <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
@@ -177,6 +167,13 @@
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
             <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
+            
+            <!-- Promo code applied here -->
+            <div class="promo-code">
+                <label for="promo">Promo Code:</label>
+                <input type="text" id="promo" placeholder="Enter code">
+                <button onclick="applyPromo()">Apply</button>
+            </div>
             <button onclick="sendOrder()">Send Order</button>
         </div>
     </section>
@@ -238,7 +235,6 @@
         cart.forEach((cartItem, index) => {
             cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button></div>`;
         });
-        recalculateDiscount(); // Recalculate discount when items are updated
         document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
@@ -246,16 +242,6 @@
         totalPrice -= cart[index].price;
         cart.splice(index, 1);
         updateCart();
-    }
-
-    function recalculateDiscount() {
-        if (promoApplied) {
-            // If promo has been applied, recalculate the total price with the promo code
-            let discount = totalPrice * 0.25; // Assuming a 25% discount
-            totalPrice -= discount;
-            alert("Promo code applied! You saved $" + discount.toFixed(2));
-        }
-        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
     function applyPromo() {
