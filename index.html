@@ -6,6 +6,7 @@
     <title>Ridon's Green Tea</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Playfair+Display:wght@400&display=swap" rel="stylesheet">
     <style>
+        /* Existing styles */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -18,29 +19,20 @@
             text-align: center;
             padding: 1rem 0;
         }
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin: 0;
-        }
         nav {
-            margin: 10px 0;
+            margin: 20px 0;
         }
         nav a {
             margin: 0 15px;
-            color: #ffffff;
+            color: #4a8c4a;
             text-decoration: none;
             font-weight: bold;
         }
         .container {
             padding: 20px;
-            max-width: 800px;
-            margin: auto;
         }
         h2 {
             color: #4a8c4a;
-            margin-top: 20px;
-            font-size: 1.8rem;
         }
         footer {
             text-align: center;
@@ -53,15 +45,15 @@
         .menu-item {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
         .menu-item span {
             flex-grow: 1;
         }
         .menu-item span.price {
-            min-width: 50px;
-            text-align: right;
+            min-width: 50px; /* Set a minimum width for price alignment */
+            text-align: right; /* Align the text to the right */
         }
         .cart {
             margin-top: 20px;
@@ -73,45 +65,6 @@
         }
         .order-form {
             margin-top: 20px;
-        }
-        button {
-            background-color: #4a8c4a;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #3a6c3a;
-        }
-        textarea {
-            width: 100%;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        input[type="text"], input[type="radio"] {
-            margin-top: 5px;
-            padding: 8px;
-            width: calc(100% - 16px);
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            .menu-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .menu-item button {
-                margin-top: 10px;
-            }
         }
     </style>
 </head>
@@ -133,33 +86,18 @@
         <h2>Our Tea Selection</h2>
         <div class="menu-item">
             <span>Green Tea</span>
-            <span class="price" id="green-tea-price">$4.00</span>
-            <select onchange="updatePrice('green-tea', this.value)">
-                <option value="small">Small ($4.00)</option>
-                <option value="medium">Medium ($6.00)</option>
-                <option value="large">Large ($8.00)</option>
-            </select>
-            <button onclick="addToCart('Green Tea', 4, 'green-tea', this)">Add to Cart</button>
+            <span class="price">$4.00</span>
+            <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
-            <span class="price" id="ginger-tea-price">$6.00</span>
-            <select onchange="updatePrice('ginger-tea', this.value)">
-                <option value="small">Small ($6.00)</option>
-                <option value="medium">Medium ($8.00)</option>
-                <option value="large">Large ($10.00)</option>
-            </select>
-            <button onclick="addToCart('Green Tea with Ginger', 6, 'ginger-tea', this)">Add to Cart</button>
+            <span class="price">$6.00</span>
+            <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
-            <span class="price" id="honey-tea-price">$6.00</span>
-            <select onchange="updatePrice('honey-tea', this.value)">
-                <option value="small">Small ($6.00)</option>
-                <option value="medium">Medium ($8.00)</option>
-                <option value="large">Large ($10.00)</option>
-            </select>
-            <button onclick="addToCart('Green Tea with Honey', 6, 'honey-tea', this)">Add to Cart</button>
+            <span class="price">$6.00</span>
+            <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
         </div>
     </section>
 
@@ -176,12 +114,7 @@
             <input type="text" id="last-name" required><br>
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
-            <p>Do you want sugar?</p>
-            <input type="radio" id="sugar-yes" name="sugar-option" value="Yes" required>
-            <label for="sugar-yes">Yes</label><br>
-            <input type="radio" id="sugar-no" name="sugar-option" value="No" required>
-            <label for="sugar-no">No</label><br>
-            <textarea id="order-message" rows="4" placeholder="Enter any additional details..."></textarea><br>
+            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
             <button onclick="sendOrder()">Send Order</button>
         </div>
     </section>
@@ -189,7 +122,6 @@
     <section id="about">
         <h2>About Us</h2>
         <p>At Ridon's Green Tea, we are passionate about providing the finest teas sourced from around the world. Our goal is to create a warm and inviting atmosphere where tea lovers can come together to enjoy their favorite brews.</p>
-        <p>As a small business owner, I am committed to supporting my family through this venture. Your support means the world to us and helps us continue sharing our love for tea with the community.</p>
     </section>
 
     <section id="history">
@@ -213,11 +145,8 @@
     let cart = [];
     let totalPrice = 0;
 
-    function addToCart(item, basePrice, type, button) {
-        const sizeSelect = button.previousElementSibling; // Get the size select element
-        const selectedSize = sizeSelect.value;
-        const price = basePrice + (sizeSelect.selectedIndex * 2);
-        cart.push({ item: `${item} (${selectedSize})`, price });
+    function addToCart(item, price) {
+        cart.push({ item, price });
         totalPrice += price;
         updateCart();
     }
@@ -226,10 +155,7 @@
         const cartItems = document.getElementById('cart-items');
         cartItems.innerHTML = '';
         cart.forEach((cartItem, index) => {
-            cartItems.innerHTML += `<div class="cart-item">
-                ${cartItem.item} - $${cartItem.price.toFixed(2)}
-                <button onclick="removeFromCart(${index})">Remove</button>
-            </div>`;
+            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button></div>`;
         });
         document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
@@ -245,7 +171,6 @@
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const orderMessage = document.getElementById('order-message').value;
-        const sugarOption = document.querySelector('input[name="sugar-option"]:checked').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
             alert('Please fill in all fields.');
@@ -257,7 +182,6 @@
             -----------------------
             Name: ${firstName} ${lastName}
             Unit Number: ${unitNumber}
-            Sugar: ${sugarOption}
             Total: $${totalPrice.toFixed(2)}
             Order Details:
             ${cart.map((cartItem, index) => `${index + 1}. ${cartItem.item} - $${cartItem.price.toFixed(2)}`).join('\n')}
@@ -269,6 +193,14 @@
         window.location.href = smsLink;
 
         resetOrder();
+        setTimeout(() => promptForReview(firstName, lastName), 30 * 60 * 1000); // 30 minutes
+    }
+
+    function promptForReview(firstName, lastName) {
+        const reviewSubject = "Review for Ridon's Green Tea";
+        const reviewBody = `Hi ${firstName}, we hope you enjoyed your tea! We would love to hear your feedback. Please reply to this email. Thank you!`;
+        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
+        alert(`Thank you for your order, ${firstName}! You can leave a review by clicking the link below:\n\n${mailtoLink}`);
     }
 
     function resetOrder() {
@@ -276,18 +208,10 @@
         totalPrice = 0;
         document.getElementById('cart-items').innerHTML = '';
         document.getElementById('total-price').innerText = '0.00';
+        document.getElementById('order-message').value = '';
         document.getElementById('first-name').value = '';
         document.getElementById('last-name').value = '';
         document.getElementById('unit-number').value = '';
-        document.getElementById('order-message').value = '';
-        document.querySelector('input[name="sugar-option"]:checked').checked = false;
-        document.getElementById('sugar-no').checked = true;
-    }
-
-    function updatePrice(type, size) {
-        const prices = { small: 0, medium: 2, large: 4 };
-        const priceDisplay = document.getElementById(`${type}-price`);
-        priceDisplay.innerText = `$${(4 + prices[size]).toFixed(2)}`; // Base price for Green Tea is $4
     }
 </script>
 
