@@ -16,10 +16,15 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 1rem 0;
+            padding: 0.5rem 0; /* Reduced padding */
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem; /* Adjusted font size */
+            margin: 0;
         }
         nav {
-            margin: 20px 0;
+            margin: 10px 0; /* Adjusted margin */
         }
         nav a {
             margin: 0 15px;
@@ -105,6 +110,9 @@
             .menu-item button {
                 width: 100%;
                 margin-top: 10px;
+            }
+            h1 {
+                font-size: 2rem; /* Responsive font size */
             }
         }
     </style>
@@ -226,15 +234,13 @@
         const promoCode = document.getElementById('promo').value.trim();
         let discount = 0;
 
-        // Check if a promo code has already been applied
         if (promoApplied) {
             alert("Promo code has already been applied.");
             return;
         }
 
-        // Promo code for 10% discount
-        if (promoCode === "SAVE10") {
-            discount = totalPrice * 0.10; // 10% discount
+        if (promoCode === "SAVE25") { // Updated promo code for 25% discount
+            discount = totalPrice * 0.25; // 25% discount
             alert("Promo code applied! You saved $" + discount.toFixed(2));
         } else {
             alert("Invalid promo code.");
@@ -270,8 +276,8 @@
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Order Confirmation&body=${encodeURIComponent(messageBody)}`;
         window.location.href = mailtoLink;
 
-        resetOrder();
         alert("Your order has been sent successfully!"); // Success message
+        resetOrder();
     }
 
     function resetOrder() {
