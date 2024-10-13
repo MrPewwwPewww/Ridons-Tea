@@ -152,7 +152,8 @@
             </div>
             <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
             <div class="tip-note">Tips are appreciated! Thank you for supporting our family business.</div>
-            <button onclick="sendOrder()">Send Order</button>
+            <button onclick="sendOrder()">Send Order via Email</button>
+            <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
         </div>
     </section>
 
@@ -245,6 +246,35 @@
 
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Order Confirmation&body=${encodeURIComponent(messageBody)}`;
         window.location.href = mailtoLink;
+
+        resetOrder();
+    }
+
+    function sendOrderViaWhatsApp() {
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const unitNumber = document.getElementById('unit-number').value.trim();
+        const orderMessage = document.getElementById('order-message').value;
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
+
+        if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        const messageBody = `
+            Order Details:
+            Name: ${firstName} ${lastName}
+            Unit: ${unitNumber}
+            Sugar Preference: ${sugarPreference}
+            Order Details: ${orderMessage}
+            Total: $${totalPrice.toFixed(2)}
+            Payment: Cash only
+            Tips are appreciated!
+        `;
+
+        const whatsappLink = `https://wa.me/?text=${encodeURIComponent(messageBody)}`;
+        window.open(whatsappLink, '_blank');
 
         resetOrder();
     }
