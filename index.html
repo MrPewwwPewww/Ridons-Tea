@@ -16,11 +16,7 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.4rem 0;
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            margin: 0;
+            padding: 0.5rem 0; /* Reduced green margin */
         }
         nav {
             margin: 10px 0;
@@ -88,73 +84,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #fff;
-            margin-top: 20px;
-        }
-        .contact-review h3 {
-            margin: 0 0 10px 0;
-            color: #4a8c4a;
-        }
-        .contact-review label {
-            margin: 5px 0;
         }
         .promo-code {
             margin-top: 10px;
         }
-        .qr-code {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 600px) {
-            header {
-                padding: 0.5rem;
-            }
-            nav {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 10px 0;
-            }
-            nav a {
-                margin: 5px 0;
-                font-size: 16px; 
-            }
-            .container {
-                padding: 10px;
-            }
-            .menu-item,
-            .cart-item,
-            .contact-review {
-                flex-direction: column; 
-                align-items: flex-start; 
-            }
-            .menu-item span,
-            .cart-item span {
-                width: 100%; 
-                text-align: left; 
-                margin-bottom: 5px; 
-            }
-            .menu-item span.price {
-                text-align: right; 
-                margin-bottom: 5px; 
-            }
-            footer {
-                padding: 15px 0; 
-            }
-            .review-button {
-                width: 100%; 
-            }
-            input[type="text"],
-            textarea {
-                width: 100%; 
-                padding: 10px; 
-                margin-bottom: 10px; 
-            }
+        #review-confirmation {
+            display: none;
         }
     </style>
 </head>
@@ -224,26 +159,20 @@
     </section>
 
     <section id="contact">
-        <h2>Contact Us</h2>
-        <div class="contact-review">
-            <div>
-                <p>Email: ridon_chaar150@hotmail.com</p>
-                <p>Phone: 647-624-6404</p>
-                <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
-            </div>
-            <div>
-                <h3>We Value Your Feedback!</h3>
-                <p>Your feedback helps us improve!</p>
-                <label for="review-email">Email:</label>
-                <input type="text" id="review-email" placeholder="Your Email" required><br>
-                <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea><br>
-                <button class="review-button" onclick="submitReview()">Submit Review</button>
-                <p id="review-confirmation" style="color: green; display: none;">Thank you for your feedback!</p>
-            </div>
+        <h2>Submit a Review by Email</h2>
+        <p>Your feedback is important to us! Please provide your email and review below:</p>
+        <form id="review-form" onsubmit="submitReview(); return false;">
+            <label for="review-email">Email:</label>
+            <input type="email" id="review-email" placeholder="Your Email" required><br>
+            <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea><br>
+            <button type="submit" class="review-button">Submit Review</button>
+        </form>
+        <div id="review-confirmation">
+            <p>Thank you for your review! We appreciate your feedback.</p>
         </div>
     </section>
 
-    <div class="qr-code">
+    <div>
         <h3>Scan the QR Code to Visit Our Website</h3>
         <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonsgreentea.com&size=150x150" alt="QR Code">
     </div>
@@ -335,6 +264,13 @@
             alert('Please enter your email and feedback.');
             return;
         }
+
+        // Send the review via email
+        const subject = "New Review from Ridon's Green Tea";
+        const body = `Email: ${reviewEmail}\nMessage: ${reviewMessage}`;
+        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        window.location.href = mailtoLink; // Open the user's mail client
 
         // Display confirmation message
         document.getElementById('review-confirmation').style.display = 'block';
