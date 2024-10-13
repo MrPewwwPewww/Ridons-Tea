@@ -16,7 +16,7 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.4rem 0; /* Reduced margin */
+            padding: 0.4rem 0;
         }
         h1 {
             font-family: 'Playfair Display', serif;
@@ -88,6 +88,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+        .contact-review h3 {
+            margin: 0 0 10px 0;
+            color: #4a8c4a;
+        }
+        .contact-review label {
+            margin: 5px 0;
         }
         .promo-code {
             margin-top: 10px;
@@ -196,7 +208,6 @@
             <label>Sugar Preference:</label>
             <label><input type="radio" name="sugar" value="Sugar" checked> Sugar</label>
             <label><input type="radio" name="sugar" value="No Sugar"> No Sugar</label><br>
-            <textarea id="order-message" rows="4" placeholder="Enter your order details..."></textarea><br>
             <button onclick="sendOrder()">Send Order via SMS</button>
             <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
         </div>
@@ -222,9 +233,9 @@
             </div>
             <div>
                 <h3>We Value Your Feedback!</h3>
-                <p>Let us know how we did! Your thoughts help us improve.</p>
+                <p>Your feedback helps us improve!</p>
                 <label for="review-email">Email:</label>
-                <input type="text" id="review-email" required><br>
+                <input type="text" id="review-email" placeholder="Your Email" required><br>
                 <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea><br>
                 <button class="review-button" onclick="submitReview()">Submit Review</button>
                 <p id="review-confirmation" style="color: green; display: none;">Thank you for your feedback!</p>
@@ -233,13 +244,13 @@
     </section>
 
     <div class="qr-code">
-        <h3>Scan to Visit Our Website</h3>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=200x200" alt="QR Code">
+        <h3>Scan the QR Code to Visit Our Website</h3>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonsgreentea.com&size=150x150" alt="QR Code">
     </div>
 </div>
 
 <footer>
-    <p>© 2023 Ridon's Green Tea. All rights reserved.</p>
+    <p>&copy; 2023 Ridon's Green Tea. All rights reserved.</p>
 </footer>
 
 <script>
@@ -272,19 +283,12 @@
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
-        const orderMessage = document.getElementById('order-message').value;
-
-        if (firstName === '' || lastName === '' || unitNumber === '') {
-            alert('Please fill in all required fields.');
-            return;
-        }
 
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
         `;
@@ -299,19 +303,12 @@
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
-        const orderMessage = document.getElementById('order-message').value;
-
-        if (firstName === '' || lastName === '' || unitNumber === '') {
-            alert('Please fill in all required fields.');
-            return;
-        }
 
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
         `;
@@ -325,7 +322,6 @@
         cart = [];
         totalPrice = 0;
         updateCart();
-        document.getElementById('order-message').value = '';
         document.getElementById('first-name').value = '';
         document.getElementById('last-name').value = '';
         document.getElementById('unit-number').value = '';
