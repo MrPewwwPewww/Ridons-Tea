@@ -24,7 +24,7 @@
             margin: 0;
         }
         nav {
-            margin: 20px 0;
+            margin: 10px 0;
         }
         nav a {
             margin: 0 15px;
@@ -214,8 +214,8 @@
     let totalPrice = 0;
 
     function addToCart(item, basePrice, type, button) {
-        const sizeSelect = button.previousElementSibling;
-        const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
+        const sizeSelect = button.previousElementSibling; // Get the size select element
+        const selectedSize = sizeSelect.value;
         const price = basePrice + (sizeSelect.selectedIndex * 2);
         cart.push({ item: `${item} (${selectedSize})`, price });
         totalPrice += price;
