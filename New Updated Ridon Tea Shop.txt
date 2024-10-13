@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ridon's Green Tea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #4a8c4a;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        h2 {
+            color: #4a8c4a;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #ddd;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .menu-item span {
+            flex-grow: 1;
+        }
+        .menu-item span.price {
+            min-width: 50px;
+            text-align: right;
+        }
+        .cart {
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        .order-form {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4a8c4a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3a6c3a;
+        }
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="radio"] {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Ridon's Green Tea</h1>
+    <nav>
+        <a href="#menu">Menu</a>
+        <a href="#about">About Us</a>
+        <a href="#history">History</a>
+        <a href="#cart">Cart</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<div class="container">
+    <section id="menu">
+        <h2>Our Tea Selection</h2>
+        <div class="menu-item">
+            <span>Green Tea</span>
+            <span class="price" id="green-tea-price">$4.00</span>
+            <select onchange="updatePrice('green-tea', this.value)">
+                <option value="small">Small ($4.00)</option>
+                <option value="medium">Medium ($6.00)</option>
+                <option value="large">Large ($8.00)</option>
+            </select>
+            <button onclick="addToCart('Green Tea', 4, 'green-tea', this)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <span>Green Tea with Ginger</span>
+            <span class="price" id="ginger-tea-price">$6.00</span>
+            <select onchange="updatePrice('ginger-tea', this.value)">
+                <option value="small">Small ($6.00)</option>
+                <option value="medium">Medium ($8.00)</option>
+                <option value="large">Large ($10.00)</option>
+            </select>
+            <button onclick="addToCart('Green Tea with Ginger', 6, 'ginger-tea', this)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <span>Green Tea with Honey</span>
+            <span class="price" id="honey-tea-price">$6.00</span>
+            <select onchange="updatePrice('honey-tea', this.value)">
+                <option value="small">Small ($6.00)</option>
+                <option value="medium">Medium ($8.00)</option>
+                <option value="large">Large ($10.00)</option>
+            </select>
+            <button onclick="addToCart('Green Tea with Honey', 6, 'honey-tea', this)">Add to Cart</button>
+        </div>
+    </section>
+
+    <section id="cart" class="cart">
+        <h2>Your Shopping Cart</h2>
+        <div id="cart-items"></div>
+        <p>Total: $<span id="total-price">0.00</span></p>
+        <div class="order-form">
+            <h3>Order Confirmation</h3>
+            <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" required><br>
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" required><br>
+            <label for="unit-number">Unit Number:</label>
+            <input type="text" id="unit-number" required><br>
+            <p>Do you want sugar?</p>
+            <input type="radio" id="sugar-yes" name="sugar-option" value="Yes" required>
+            <label for="sugar-yes">Yes</label><br>
+            <input type="radio" id="sugar-no" name="sugar-option" value="No" required>
+            <label for="sugar-no">No</label><br>
+            <p>Pickup option only:</p>
+            <input type="radio" id="pickup" name="delivery-option" value="Pickup" checked required>
+            <label for="pickup">Pickup</label><br>
+            <textarea id="order-message" rows="4" placeholder="Enter any additional details..."></textarea><br>
+            <button onclick="sendOrder()">Send Order</button>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>At Ridon's Green Tea, we are passionate about providing the finest teas sourced from around the world. Our goal is to create a warm and inviting atmosphere where tea lovers can come together to enjoy their favorite brews.</p>
+        <p>As a small business owner, I am committed to supporting my family through this venture. Your support means the world to us and helps us continue sharing our love for tea with the community.</p>
+    </section>
+
+    <section id="history">
+        <h2>History of Green Tea</h2>
+        <p>Green tea has a rich history that dates back over 5,000 years in China. Initially used for medicinal purposes, it became popular as a beverage during the Tang Dynasty (618-907 AD). The practice of drinking green tea spread to Japan in the early 9th century, where it was refined into a cultural ritual, especially during the tea ceremony. Green tea is made from the leaves of the Camellia sinensis plant and undergoes minimal oxidation, preserving its natural antioxidants and flavors. Today, it is enjoyed worldwide, celebrated for its health benefits and cultural significance.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: ridon_chaar150@hotmail.com</p>
+        <p>Phone: 647-624-6404</p>
+        <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2024 Ridon's Green Tea. All rights reserved.</p>
+</footer>
+
+<script>
+    let cart = [];
+    let totalPrice = 0;
+
+    function addToCart(item, basePrice, type, button) {
+        const sizeSelect = button.previousElementSibling;
+        const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
+        const price = basePrice + (sizeSelect.selectedIndex * 2);
+        
+        cart.push({ item: `${item} - ${selectedSize}`, price });
+        totalPrice += price;
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+        cart.forEach((cartItem, index) => {
+            cartItems.innerHTML += `
+                <div class="cart-item">
+                    ${index + 1}. ${cartItem.item} - $${cartItem.price.toFixed(2)}
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                </div>`;
+        });
+        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
+    }
+
+    function removeFromCart(index) {
+        totalPrice -= cart[index].price;
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    function sendOrder() {
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const unitNumber = document.getElementById('unit-number').value.trim();
+        const orderMessage = document.getElementById('order-message').value;
+        const sugarOption = document.querySelector('input[name="sugar-option"]:checked').value;
+
+        if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        const messageBody = `
+            Order Receipt
+            -----------------------
+            Name: ${firstName} ${lastName}
+            Unit Number: ${unitNumber}
+            Sugar: ${sugarOption}
+            Total: $${totalPrice.toFixed(2)}
+            Order Details:
+            ${cart.map((cartItem, index) => `${index + 1}. ${cartItem.item} - $${cartItem.price.toFixed(2)}`).join('\n')}
+            -----------------------
+            Additional Details: ${orderMessage}
+        `;
+
+        const smsLink = `sms:?body=${encodeURIComponent(messageBody)}`;
+        window.location.href = smsLink;
+
+        resetOrder();
+    }
+
+    function resetOrder() {
+        cart = [];
+        totalPrice = 0;
+        document.getElementById('cart-items').innerHTML = '';
+        document.getElementById('total-price').innerText = '0.00';
+        document.getElementById('first-name').value = '';
+        document.getElementById('last-name').value = '';
+        document.getElementById('unit-number').value = '';
+        document.getElementById('order-message').value = '';
+        document.querySelector('input[name="sugar-option"]:checked').checked = false;
+        document.getElementById('sugar-no').checked = true;
+    }
+</script>
+
+</body>
+</html>
