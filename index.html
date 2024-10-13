@@ -16,24 +16,16 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.5rem 0; /* Reduced padding */
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem; /* Adjusted font size */
-            margin: 0;
+            padding: 1rem 0;
         }
         nav {
-            margin: 10px 0; /* Adjusted margin */
+            margin: 20px 0;
         }
         nav a {
             margin: 0 15px;
             color: #4a8c4a;
             text-decoration: none;
             font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
         }
         .container {
             padding: 20px;
@@ -96,24 +88,38 @@
         .promo-code {
             margin-top: 10px;
         }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 600px) {
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
-            .menu-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .menu-item button {
-                width: 100%;
-                margin-top: 10px;
-            }
-            h1 {
-                font-size: 2rem; /* Responsive font size */
-            }
+        /* Modal styles */
+        #reviewModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -130,23 +136,23 @@
     </nav>
 </header>
 
-<main class="container">
+<div class="container">
     <section id="menu">
         <h2>Our Tea Selection</h2>
         <div class="menu-item">
             <span>Green Tea</span>
             <span class="price">$4.00</span>
-            <button aria-label="Add Green Tea to cart" onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
             <span class="price">$6.00</span>
-            <button aria-label="Add Green Tea with Ginger to cart" onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
             <span class="price">$6.00</span>
-            <button aria-label="Add Green Tea with Honey to cart" onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
         </div>
     </section>
 
@@ -193,10 +199,23 @@
                 <p>Phone: 647-624-6404</p>
                 <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
             </div>
-            <button class="review-button" onclick="promptReview()">Leave a Review</button>
+            <button class="review-button" onclick="openReviewModal()">Leave a Review</button>
         </div>
     </section>
-</main>
+</div>
+
+<!-- Review Modal -->
+<div id="reviewModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeReviewModal()">&times;</span>
+        <h2>Leave a Review</h2>
+        <label for="review-email">Email:</label>
+        <input type="email" id="review-email" required><br>
+        <label for="review-message">Your Feedback:</label>
+        <textarea id="review-message" rows="4" required></textarea><br>
+        <button onclick="submitReview()">Submit</button>
+    </div>
+</div>
 
 <footer>
     <p>&copy; 2024 Ridon's Green Tea. All rights reserved.</p>
@@ -217,29 +236,40 @@
         const cartItems = document.getElementById('cart-items');
         cartItems.innerHTML = '';
         cart.forEach((cartItem, index) => {
-            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button aria-label="Remove ${cartItem.item} from cart" onclick="removeFromCart(${index})">Remove</button></div>`;
+            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button></div>`;
         });
+        recalculateDiscount(); // Recalculate discount when items are updated
         document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
     function removeFromCart(index) {
-        if (confirm("Are you sure you want to remove this item from the cart?")) {
-            totalPrice -= cart[index].price;
-            cart.splice(index, 1);
-            updateCart();
+        totalPrice -= cart[index].price;
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    function recalculateDiscount() {
+        if (promoApplied) {
+            // If promo has been applied, recalculate the total price with the promo code
+            let discount = totalPrice * 0.25; // Assuming a 25% discount
+            totalPrice -= discount;
+            alert("Promo code applied! You saved $" + discount.toFixed(2));
         }
+        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
     function applyPromo() {
         const promoCode = document.getElementById('promo').value.trim();
         let discount = 0;
 
+        // Check if a promo code has already been applied
         if (promoApplied) {
             alert("Promo code has already been applied.");
             return;
         }
 
-        if (promoCode === "SAVE25") { // Updated promo code for 25% discount
+        // Promo code for 25% discount
+        if (promoCode === "SAVE25") {
             discount = totalPrice * 0.25; // 25% discount
             alert("Promo code applied! You saved $" + discount.toFixed(2));
         } else {
@@ -276,7 +306,6 @@
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Order Confirmation&body=${encodeURIComponent(messageBody)}`;
         window.location.href = mailtoLink;
 
-        alert("Your order has been sent successfully!"); // Success message
         resetOrder();
     }
 
@@ -291,14 +320,30 @@
         promoApplied = false; // Reset promo code application status
     }
 
-    function promptReview() {
-        const email = prompt("Please enter your email to leave a review:");
-        if (email) {
-            const reviewSubject = "Your Review for Ridon's Green Tea";
-            const reviewBody = "Please share your feedback:";
-            const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
-            window.location.href = mailtoLink;
+    function openReviewModal() {
+        document.getElementById("reviewModal").style.display = "block";
+    }
+
+    function closeReviewModal() {
+        document.getElementById("reviewModal").style.display = "none";
+    }
+
+    function submitReview() {
+        const email = document.getElementById('review-email').value.trim();
+        const reviewMessage = document.getElementById('review-message').value.trim();
+
+        if (email === '' || reviewMessage === '') {
+            alert('Please fill in all fields.');
+            return;
         }
+
+        const reviewBody = `Email: ${email}\nReview: ${reviewMessage}`;
+        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Customer Review&body=${encodeURIComponent(reviewBody)}`;
+        window.location.href = mailtoLink;
+
+        closeReviewModal(); // Close the modal after submission
+        document.getElementById('review-email').value = '';
+        document.getElementById('review-message').value = '';
     }
 </script>
 
