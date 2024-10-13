@@ -178,7 +178,7 @@
 <script>
     let cart = [];
     let totalPrice = 0;
-    let firstOrder = true; // Flag to check if it's the first order
+    let promoApplied = false; // Flag to check if a promo code has been applied
 
     function addToCart(item, price) {
         cart.push({ item, price });
@@ -205,12 +205,14 @@
         const promoCode = document.getElementById('promo').value.trim();
         let discount = 0;
 
-        // First-time order discount
-        if (firstOrder) {
-            discount = totalPrice * 0.20; // 20% discount
-            alert("First-time order discount applied! You saved $" + discount.toFixed(2));
-            firstOrder = false; // Set the flag to false after the first order
-        } else if (promoCode === "SAVE10") {
+        // Check if a promo code has already been applied
+        if (promoApplied) {
+            alert("Promo code has already been applied.");
+            return;
+        }
+
+        // Promo code for 10% discount
+        if (promoCode === "SAVE10") {
             discount = totalPrice * 0.10; // 10% discount
             alert("Promo code applied! You saved $" + discount.toFixed(2));
         } else {
@@ -221,6 +223,7 @@
         totalPrice -= discount;
         updateCart();
         document.getElementById('promo').value = ''; // Clear the input
+        promoApplied = true; // Set the promoApplied flag
     }
 
     function sendOrder() {
@@ -230,13 +233,12 @@
         const orderMessage = document.getElementById('order-message').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
-            alert('Please fill in all fields.');
+            alert('Please fill in all required fields.');
             return;
         }
 
         const messageBody = `
-            Order Receipt
-            -----------------------
+            Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Order Details: ${orderMessage}
@@ -258,6 +260,7 @@
         document.getElementById('first-name').value = '';
         document.getElementById('last-name').value = '';
         document.getElementById('unit-number').value = '';
+        promoApplied = false; // Reset promo code application status
     }
 
     function promptReview() {
