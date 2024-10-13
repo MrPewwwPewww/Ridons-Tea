@@ -86,9 +86,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        .promo-code {
-            margin-top: 10px;
-        }
         #qr-code {
             margin-top: 20px;
             text-align: center;
@@ -149,7 +146,7 @@
             </div>
             <div class="contact-review">
                 <button onclick="sendOrder()">Send Order via WhatsApp</button>
-                <button onclick="promptReview()">Submit a Review</button>
+                <button class="review-button" onclick="promptReview()">Leave a Review</button>
             </div>
             <p style="color: #4a8c4a;">Tips are appreciated!</p>
         </div>
@@ -179,7 +176,7 @@
 
     <div id="qr-code">
         <h3>Scan to Visit Our Website</h3>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=150x150" alt="QR Code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://yourwebsite.com&size=150x150" alt="QR Code">
     </div>
 </div>
 
@@ -232,25 +229,17 @@
     }
 
     function promptReview() {
-        document.getElementById('feedback-section').innerHTML = `
-            <h3>Submit a Review</h3>
-            <label for="review-email">Your Email:</label>
-            <input type="email" id="review-email" required>
-            <label for="review-feedback">Your Feedback:</label>
-            <textarea id="review-feedback" rows="4" cols="50" required></textarea>
-            <button onclick="submitReview()">Submit</button>
-        `;
-    }
+        const email = prompt("Please enter your email to leave a review:");
+        const feedback = prompt("Please share your feedback:");
 
-    function submitReview() {
-        const email = document.getElementById('review-email').value.trim();
-        const feedback = document.getElementById('review-feedback').value;
-
-        const reviewBody = `Email: ${email}\nFeedback: ${feedback}`;
-        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Feedback from ${email}&body=${encodeURIComponent(reviewBody)}`;
-        window.location.href = mailtoLink;
-
-        alert('Thank you for your review!');
+        if (email && feedback) {
+            const reviewBody = `Email: ${email}\nFeedback: ${feedback}`;
+            const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Feedback from ${email}&body=${encodeURIComponent(reviewBody)}`;
+            window.location.href = mailtoLink;
+            alert('Thank you for your review!');
+        } else {
+            alert("Please provide both email and feedback.");
+        }
     }
 </script>
 
