@@ -85,9 +85,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        .promo-code {
-            margin-top: 10px;
-        }
         .sugar-option {
             margin-top: 10px;
         }
@@ -147,7 +144,7 @@
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
             <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
-            <button onclick="sendOrder()">Send Order via Email</button>
+            <button onclick="sendOrderViaSMS()">Send Order via SMS</button>
             <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
         </div>
     </section>
@@ -204,7 +201,7 @@
         updateCart();
     }
 
-    function sendOrder() {
+    function sendOrderViaSMS() {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
@@ -227,8 +224,9 @@
             Tips are appreciated!
         `;
 
-        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Order Confirmation&body=${encodeURIComponent(messageBody)}`;
-        window.location.href = mailtoLink;
+        // Placeholder for SMS sending logic
+        alert("SMS sending functionality needs to be implemented.");
+        console.log("Send the following message via SMS: ", messageBody);
 
         resetOrder();
     }
@@ -239,11 +237,6 @@
         const unitNumber = document.getElementById('unit-number').value.trim();
         const orderMessage = document.getElementById('order-message').value;
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
-
-        if (firstName === '' || lastName === '' || unitNumber === '') {
-            alert('Please fill in all required fields.');
-            return;
-        }
 
         const messageBody = `
             Order Details:
