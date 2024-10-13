@@ -65,12 +65,6 @@
         .order-form {
             margin-top: 20px;
         }
-        .tip-note {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #4a8c4a;
-            text-align: center;
-        }
         .review-button {
             background-color: #4a8c4a;
             color: white;
@@ -91,6 +85,9 @@
             justify-content: space-between;
             align-items: center;
         }
+        .promo-code {
+            margin-top: 10px;
+        }
         .sugar-option {
             margin-top: 10px;
         }
@@ -99,7 +96,7 @@
 <body>
 
 <header>
-    <h1>Welcome to Ridon's Green Tea</h1>
+    <h1 style="font-family: 'Playfair Display', serif;">Welcome to Ridon's Green Tea</h1>
     <nav>
         <a href="#menu">Menu</a>
         <a href="#about">About Us</a>
@@ -134,24 +131,22 @@
         <div id="cart-items"></div>
         <p>Total: $<span id="total-price">0.00</span></p>
 
+        <div class="sugar-option">
+            <label>Sugar Preference:</label>
+            <label><input type="radio" name="sugar" value="With Sugar" checked> With Sugar</label>
+            <label><input type="radio" name="sugar" value="No Sugar"> No Sugar</label>
+        </div>
+
         <div class="order-form">
             <h3>Order Confirmation</h3>
-            <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
+            <p>Please fill out your details. Only cash payment accepted upon pickup. Tips are appreciated!</p>
             <label for="first-name">First Name:</label>
             <input type="text" id="first-name" required><br>
             <label for="last-name">Last Name:</label>
             <input type="text" id="last-name" required><br>
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
-            <label>Sugar Preference:</label>
-            <div class="sugar-option">
-                <input type="radio" id="sugar-yes" name="sugar" value="With Sugar" checked>
-                <label for="sugar-yes">With Sugar</label>
-                <input type="radio" id="sugar-no" name="sugar" value="No Sugar">
-                <label for="sugar-no">No Sugar</label>
-            </div>
             <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
-            <div class="tip-note">Tips are appreciated! Thank you for supporting our family business.</div>
             <button onclick="sendOrder()">Send Order via Email</button>
             <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
         </div>
@@ -175,21 +170,9 @@
                 <p>Phone: 647-624-6404</p>
                 <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
             </div>
-            <button class="review-button" onclick="openReviewModal()">Leave a Review</button>
+            <button class="review-button" onclick="promptReview()">Leave a Review</button>
         </div>
     </section>
-
-    <div id="reviewModal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeReviewModal()">&times;</span>
-            <h2>Leave a Review</h2>
-            <label for="review-email">Email:</label>
-            <input type="email" id="review-email" placeholder="Your email" required>
-            <label for="review-message">Your Feedback:</label>
-            <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea>
-            <button onclick="submitReview()">Submit Review</button>
-        </div>
-    </div>
 </div>
 
 <footer>
@@ -228,7 +211,7 @@
         const orderMessage = document.getElementById('order-message').value;
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
-        if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
+        if (firstName === '' || lastName === '' || unitNumber === '') {
             alert('Please fill in all required fields.');
             return;
         }
@@ -238,7 +221,7 @@
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage}
+            Order Details: ${orderMessage ? orderMessage : "No additional details provided."}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
             Tips are appreciated!
@@ -257,7 +240,7 @@
         const orderMessage = document.getElementById('order-message').value;
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
-        if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
+        if (firstName === '' || lastName === '' || unitNumber === '') {
             alert('Please fill in all required fields.');
             return;
         }
@@ -267,7 +250,7 @@
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage}
+            Order Details: ${orderMessage ? orderMessage : "No additional details provided."}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
             Tips are appreciated!
@@ -289,28 +272,14 @@
         document.getElementById('unit-number').value = '';
     }
 
-    function openReviewModal() {
-        document.getElementById('reviewModal').style.display = 'block';
-    }
-
-    function closeReviewModal() {
-        document.getElementById('reviewModal').style.display = 'none';
-    }
-
-    function submitReview() {
-        const email = document.getElementById('review-email').value.trim();
-        const message = document.getElementById('review-message').value.trim();
-
-        if (email === '' || message === '') {
-            alert('Please fill in all fields.');
-            return;
+    function promptReview() {
+        const email = prompt("Please enter your email to leave a review:");
+        if (email) {
+            const reviewSubject = "Your Review for Ridon's Green Tea";
+            const reviewBody = "Please share your feedback:";
+            const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
+            window.location.href = mailtoLink;
         }
-
-        const reviewBody = `Review from: ${email}\nFeedback: ${message}`;
-        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Customer Review&body=${encodeURIComponent(reviewBody)}`;
-        window.location.href = mailtoLink;
-
-        closeReviewModal();
     }
 </script>
 
