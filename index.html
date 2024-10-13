@@ -66,6 +66,19 @@
         .order-form {
             margin-top: 20px;
         }
+        .review-button {
+            background-color: #4a8c4a;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .review-button:hover {
+            background-color: #3a6c3a;
+        }
     </style>
 </head>
 <body>
@@ -100,6 +113,8 @@
             <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
         </div>
     </section>
+
+    <button class="review-button" onclick="promptReview()">Leave a Review</button>
 
     <section id="cart" class="cart">
         <h2>Your Shopping Cart</h2>
@@ -200,18 +215,27 @@
         const reviewSubject = "Review for Ridon's Green Tea";
         const reviewBody = `Hi ${firstName}, we hope you enjoyed your tea! We would love to hear your feedback. Please reply to this email. Thank you!`;
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
-        alert(`Thank you for your order, ${firstName}! You can leave a review by clicking the link below:\n\n${mailtoLink}`);
+        alert(`Thank you for your order! You can leave us a review at ${mailtoLink}`);
     }
 
     function resetOrder() {
         cart = [];
         totalPrice = 0;
-        document.getElementById('cart-items').innerHTML = '';
-        document.getElementById('total-price').innerText = '0.00';
+        updateCart();
         document.getElementById('order-message').value = '';
         document.getElementById('first-name').value = '';
         document.getElementById('last-name').value = '';
         document.getElementById('unit-number').value = '';
+    }
+
+    function promptReview() {
+        const email = prompt("Please enter your email to leave a review:");
+        if (email) {
+            const reviewSubject = "Your Review for Ridon's Green Tea";
+            const reviewBody = "Please share your feedback:";
+            const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
+            window.location.href = mailtoLink;
+        }
     }
 </script>
 
