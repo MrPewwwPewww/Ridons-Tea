@@ -142,7 +142,7 @@
                 <label><input type="radio" name="sugar-green" value="Sugar"> Sugar</label>
                 <label><input type="radio" name="sugar-green" value="No Sugar"> No Sugar</label>
             </div>
-            <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea', 4.00, 'sugar-green')">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
@@ -151,7 +151,7 @@
                 <label><input type="radio" name="sugar-ginger" value="Sugar"> Sugar</label>
                 <label><input type="radio" name="sugar-ginger" value="No Sugar"> No Sugar</label>
             </div>
-            <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea with Ginger', 6.00, 'sugar-ginger')">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
@@ -160,7 +160,7 @@
                 <label><input type="radio" name="sugar-honey" value="Sugar"> Sugar</label>
                 <label><input type="radio" name="sugar-honey" value="No Sugar"> No Sugar</label>
             </div>
-            <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
+            <button onclick="addToCart('Green Tea with Honey', 6.00, 'sugar-honey')">Add to Cart</button>
         </div>
     </section>
 
@@ -226,9 +226,13 @@
     let cart = [];
     let totalPrice = 0;
 
-    function addToCart(item, price) {
-        const sugarPreference = document.querySelector(`input[name="sugar-${item.replace(/\s+/g, '-').toLowerCase()}"]:checked`);
-        const sugarText = sugarPreference ? ` (${sugarPreference.value})` : '';
+    function addToCart(item, price, sugarName) {
+        const sugarPreference = document.querySelector(`input[name="${sugarName}"]:checked`);
+        if (!sugarPreference) {
+            alert('Please select a sugar preference before adding to cart.');
+            return;
+        }
+        const sugarText = sugarPreference.value === 'No Sugar' ? ' (No Sugar)' : ' (Sugar)';
         cart.push({ item: item + sugarText, price });
         totalPrice += price;
         updateCart();
