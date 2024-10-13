@@ -83,10 +83,11 @@
         .contact-review {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
-        .sugar-option {
-            margin-top: 10px;
+        .qr-code {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -127,25 +128,23 @@
         <h2>Your Shopping Cart</h2>
         <div id="cart-items"></div>
         <p>Total: $<span id="total-price">0.00</span></p>
-
-        <div class="sugar-option">
-            <label>Sugar Preference:</label>
-            <label><input type="radio" name="sugar" value="With Sugar" checked> With Sugar</label>
-            <label><input type="radio" name="sugar" value="No Sugar"> No Sugar</label>
-        </div>
-
+        
         <div class="order-form">
             <h3>Order Confirmation</h3>
-            <p>Please fill out your details. Only cash payment accepted upon pickup. Tips are appreciated!</p>
+            <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
             <label for="first-name">First Name:</label>
             <input type="text" id="first-name" required><br>
             <label for="last-name">Last Name:</label>
             <input type="text" id="last-name" required><br>
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
-            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
-            <button onclick="sendOrderViaSMS()">Send Order via SMS</button>
+            <label>Sugar Preference:</label>
+            <label><input type="radio" name="sugar" value="sugar" checked> Sugar</label>
+            <label><input type="radio" name="sugar" value="no-sugar"> No Sugar</label><br>
+            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details (optional)..."></textarea><br>
+            <button onclick="sendOrder()">Send Order via SMS</button>
             <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
+            <p style="font-weight: bold; margin-top: 10px;">Tips are appreciated!</p>
         </div>
     </section>
 
@@ -167,9 +166,19 @@
                 <p>Phone: 647-624-6404</p>
                 <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
             </div>
-            <button class="review-button" onclick="promptReview()">Leave a Review</button>
+            <div>
+                <h3>We Value Your Feedback!</h3>
+                <p>Let us know how we did! Your thoughts help us improve.</p>
+                <textarea id="review-message" rows="4" cols="30" placeholder="Share your thoughts..." required></textarea><br>
+                <button class="review-button" onclick="submitReview()">Submit Review</button>
+            </div>
         </div>
     </section>
+
+    <div class="qr-code">
+        <h3>Scan to Visit Our Website</h3>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://yourwebsite.com&size=200x200" alt="QR Code">
+    </div>
 </div>
 
 <footer>
@@ -201,32 +210,31 @@
         updateCart();
     }
 
-    function sendOrderViaSMS() {
+    function sendOrder() {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const orderMessage = document.getElementById('order-message').value;
-        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '') {
             alert('Please fill in all required fields.');
             return;
         }
 
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage ? orderMessage : "No additional details provided."}
+            Order Details: ${orderMessage || 'N/A'}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
             Tips are appreciated!
         `;
 
-        // Placeholder for SMS sending logic
-        alert("SMS sending functionality needs to be implemented.");
-        console.log("Send the following message via SMS: ", messageBody);
+        const smsLink = `sms:?body=${encodeURIComponent(messageBody)}`;
+        window.location.href = smsLink;
 
         resetOrder();
     }
@@ -236,14 +244,19 @@
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const orderMessage = document.getElementById('order-message').value;
-        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
+        if (firstName === '' || lastName === '' || unitNumber === '') {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage ? orderMessage : "No additional details provided."}
+            Order Details: ${orderMessage || 'N/A'}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
             Tips are appreciated!
@@ -265,14 +278,19 @@
         document.getElementById('unit-number').value = '';
     }
 
-    function promptReview() {
-        const email = prompt("Please enter your email to leave a review:");
-        if (email) {
-            const reviewSubject = "Your Review for Ridon's Green Tea";
-            const reviewBody = "Please share your feedback:";
-            const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewBody)}`;
-            window.location.href = mailtoLink;
+    function submitReview() {
+        const reviewMessage = document.getElementById('review-message').value.trim();
+
+        if (reviewMessage === '') {
+            alert('Please enter your feedback before submitting.');
+            return;
         }
+
+        const reviewSubject = "New Review for Ridon's Green Tea";
+        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewMessage)}`;
+        window.location.href = mailtoLink;
+
+        document.getElementById('review-message').value = '';
     }
 </script>
 
