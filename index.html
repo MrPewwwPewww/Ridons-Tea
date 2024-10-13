@@ -16,15 +16,15 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.5rem 0; /* Reduced padding */
+            padding: 0.5rem 0;
         }
         header h1 {
-            font-family: 'Playfair Display', serif; /* More appealing font */
-            font-size: 2.5rem; /* Larger font size */
-            margin: 0; /* Remove default margin */
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 0;
         }
         nav {
-            margin: 10px 0; /* Adjusted margin */
+            margin: 10px 0;
         }
         nav a {
             margin: 0 15px;
@@ -90,7 +90,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        /* Modal styles */
         #reviewModal {
             display: none;
             position: fixed;
@@ -107,12 +106,12 @@
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
-            padding: 30px; /* Increased padding */
+            padding: 30px;
             border: 1px solid #888;
             width: 90%;
-            max-width: 500px; /* Set a max width for better appearance */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow */
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .close {
             color: #aaa;
@@ -128,15 +127,15 @@
         }
         label {
             display: block;
-            margin: 10px 0 5px; /* Spacing for labels */
+            margin: 10px 0 5px;
         }
         input[type="email"],
         textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px; /* Rounded edges */
-            margin-bottom: 15px; /* Spacing below inputs */
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
         button[type="submit"] {
             background-color: #4a8c4a;
@@ -145,10 +144,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%; /* Full width button */
+            width: 100%;
         }
         button[type="submit"]:hover {
-            background-color: #3a6c3a; /* Darker on hover */
+            background-color: #3a6c3a;
         }
     </style>
 </head>
@@ -199,14 +198,9 @@
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required>
             <textarea id="order-message" rows="4" placeholder="Enter your order details..."></textarea>
-            
-            <!-- Promo code applied here -->
-            <div class="promo-code">
-                <label for="promo">Promo Code:</label>
-                <input type="text" id="promo" placeholder="Enter code">
-                <button onclick="applyPromo()">Apply</button>
-            </div>
             <button onclick="sendOrder()">Send Order</button>
+            <p style="margin-top: 20px;">If you'd like to leave a tip, please use the PayPal link below:</p>
+            <a href="https://www.paypal.com" target="_blank" style="display: inline-block; background-color: #4a8c4a; color: white; padding: 10px; border-radius: 5px; text-decoration: none;">Leave a Tip via PayPal</a>
         </div>
     </section>
 
@@ -255,7 +249,6 @@
 <script>
     let cart = [];
     let totalPrice = 0;
-    let promoApplied = false; // Flag to check if a promo code has been applied
 
     function addToCart(item, price) {
         cart.push({ item, price });
@@ -276,31 +269,6 @@
         totalPrice -= cart[index].price;
         cart.splice(index, 1);
         updateCart();
-    }
-
-    function applyPromo() {
-        const promoCode = document.getElementById('promo').value.trim();
-        let discount = 0;
-
-        // Check if a promo code has already been applied
-        if (promoApplied) {
-            alert("Promo code has already been applied.");
-            return;
-        }
-
-        // Promo code for 25% discount
-        if (promoCode === "SAVE25") {
-            discount = totalPrice * 0.25; // 25% discount
-            alert("Promo code applied! You saved $" + discount.toFixed(2));
-        } else {
-            alert("Invalid promo code.");
-            return;
-        }
-
-        totalPrice -= discount;
-        updateCart();
-        document.getElementById('promo').value = ''; // Clear the input
-        promoApplied = true; // Set the promoApplied flag
     }
 
     function sendOrder() {
@@ -337,7 +305,6 @@
         document.getElementById('first-name').value = '';
         document.getElementById('last-name').value = '';
         document.getElementById('unit-number').value = '';
-        promoApplied = false; // Reset promo code application status
     }
 
     function openReviewModal() {
