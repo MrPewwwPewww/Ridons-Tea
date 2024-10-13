@@ -16,15 +16,10 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.5rem 0;
-        }
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin: 0;
+            padding: 1rem 0;
         }
         nav {
-            margin: 10px 0;
+            margin: 20px 0;
         }
         nav a {
             margin: 0 15px;
@@ -70,6 +65,12 @@
         .order-form {
             margin-top: 20px;
         }
+        .tip-note {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4a8c4a;
+            text-align: center;
+        }
         .review-button {
             background-color: #4a8c4a;
             color: white;
@@ -90,73 +91,8 @@
             justify-content: space-between;
             align-items: center;
         }
-        #reviewModal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 30px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input[type="email"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        button[type="submit"] {
-            background-color: #4a8c4a;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button[type="submit"]:hover {
-            background-color: #3a6c3a;
-        }
-        .tip-note {
-            background-color: #e9f9e9;
-            border: 1px solid #4a8c4a;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 1rem;
-            text-align: center;
+        .sugar-option {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -180,28 +116,16 @@
             <span>Green Tea</span>
             <span class="price">$4.00</span>
             <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
-            <select onchange="selectSugar('Green Tea', this)">
-                <option value="sugar">Sugar</option>
-                <option value="no-sugar">No Sugar</option>
-            </select>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
             <span class="price">$6.00</span>
             <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
-            <select onchange="selectSugar('Green Tea with Ginger', this)">
-                <option value="sugar">Sugar</option>
-                <option value="no-sugar">No Sugar</option>
-            </select>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
             <span class="price">$6.00</span>
             <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
-            <select onchange="selectSugar('Green Tea with Honey', this)">
-                <option value="sugar">Sugar</option>
-                <option value="no-sugar">No Sugar</option>
-            </select>
         </div>
     </section>
 
@@ -209,21 +133,25 @@
         <h2>Your Shopping Cart</h2>
         <div id="cart-items"></div>
         <p>Total: $<span id="total-price">0.00</span></p>
-        
-        <div class="tip-note">
-            <p>Tips are appreciated! Thank you for supporting our team.</p>
-        </div>
 
         <div class="order-form">
             <h3>Order Confirmation</h3>
             <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
             <label for="first-name">First Name:</label>
-            <input type="text" id="first-name" required>
+            <input type="text" id="first-name" required><br>
             <label for="last-name">Last Name:</label>
-            <input type="text" id="last-name" required>
+            <input type="text" id="last-name" required><br>
             <label for="unit-number">Unit Number:</label>
-            <input type="text" id="unit-number" required>
-            <textarea id="order-message" rows="4" placeholder="Enter your order details..."></textarea>
+            <input type="text" id="unit-number" required><br>
+            <label>Sugar Preference:</label>
+            <div class="sugar-option">
+                <input type="radio" id="sugar-yes" name="sugar" value="With Sugar" checked>
+                <label for="sugar-yes">With Sugar</label>
+                <input type="radio" id="sugar-no" name="sugar" value="No Sugar">
+                <label for="sugar-no">No Sugar</label>
+            </div>
+            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
+            <div class="tip-note">Tips are appreciated! Thank you for supporting our family business.</div>
             <button onclick="sendOrder()">Send Order</button>
         </div>
     </section>
@@ -250,7 +178,7 @@
         </div>
     </section>
 
-    <div id="reviewModal">
+    <div id="reviewModal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeReviewModal()">&times;</span>
             <h2>Leave a Review</h2>
@@ -277,16 +205,6 @@
         updateCart();
     }
 
-    function selectSugar(item, select) {
-        const sugarOption = select.value === 'sugar' ? 'with Sugar' : 'no Sugar';
-        const itemName = `${item} (${sugarOption})`;
-        const index = cart.findIndex(cartItem => cartItem.item.startsWith(item));
-        if (index !== -1) {
-            cart[index].item = itemName; // Update the item name with sugar option
-        }
-        updateCart();
-    }
-
     function updateCart() {
         const cartItems = document.getElementById('cart-items');
         cartItems.innerHTML = '';
@@ -307,6 +225,7 @@
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
         const orderMessage = document.getElementById('order-message').value;
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '') {
             alert('Please fill in all required fields.');
@@ -317,9 +236,11 @@
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
+            Sugar Preference: ${sugarPreference}
             Order Details: ${orderMessage}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
+            Tips are appreciated!
         `;
 
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Order Confirmation&body=${encodeURIComponent(messageBody)}`;
@@ -339,29 +260,27 @@
     }
 
     function openReviewModal() {
-        document.getElementById("reviewModal").style.display = "block";
+        document.getElementById('reviewModal').style.display = 'block';
     }
 
     function closeReviewModal() {
-        document.getElementById("reviewModal").style.display = "none";
+        document.getElementById('reviewModal').style.display = 'none';
     }
 
     function submitReview() {
         const email = document.getElementById('review-email').value.trim();
-        const reviewMessage = document.getElementById('review-message').value.trim();
+        const message = document.getElementById('review-message').value.trim();
 
-        if (email === '' || reviewMessage === '') {
+        if (email === '' || message === '') {
             alert('Please fill in all fields.');
             return;
         }
 
-        const reviewBody = `Email: ${email}\nReview: ${reviewMessage}`;
+        const reviewBody = `Review from: ${email}\nFeedback: ${message}`;
         const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Customer Review&body=${encodeURIComponent(reviewBody)}`;
         window.location.href = mailtoLink;
 
         closeReviewModal();
-        document.getElementById('review-email').value = '';
-        document.getElementById('review-message').value = '';
     }
 </script>
 
