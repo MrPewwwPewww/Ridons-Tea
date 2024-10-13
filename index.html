@@ -56,11 +56,6 @@
         .cart {
             margin-top: 20px;
         }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-        }
         .order-form {
             margin-top: 20px;
         }
@@ -168,68 +163,4 @@
 
     <section id="history">
         <h2>History of Green Tea</h2>
-        <p>Green tea has a rich history that dates back over 5,000 years in China. Initially used for medicinal purposes, it became popular as a beverage during the Tang Dynasty (618-907 AD). The practice of drinking green tea spread to Japan in the early 9th century, where it was refined into a cultural ritual, especially during the tea ceremony. Green tea is made from the leaves of the Camellia sinensis plant and undergoes minimal oxidation, preserving its natural antioxidants and flavors. Today, it is enjoyed worldwide, celebrated for its health benefits and cultural significance.</p>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Email: ridon_chaar150@hotmail.com</p>
-        <p>Phone: 647-624-6404</p>
-        <p>Address: 100 Gloucester Street, Toronto, ON, Canada</p>
-    </section>
-</div>
-
-<footer>
-    <p>&copy; 2024 Ridon's Green Tea. All rights reserved.</p>
-</footer>
-
-<script>
-    let cart = [];
-    let totalPrice = 0;
-
-    function addToCart(item, price) {
-        cart.push({ item, price });
-        totalPrice += price;
-        updateCart();
-    }
-
-    function updateCart() {
-        const cartItems = document.getElementById('cart-items');
-        cartItems.innerHTML = '';
-        cart.forEach(cartItem => {
-            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)}</div>`;
-        });
-        document.getElementById('total-price').innerText = totalPrice.toFixed(2);
-    }
-
-    function sendOrder() {
-        const firstName = document.getElementById('first-name').value.trim();
-        const lastName = document.getElementById('last-name').value.trim();
-        const unitNumber = document.getElementById('unit-number').value.trim();
-        const orderMessage = document.getElementById('order-message').value;
-        const deliveryOption = document.querySelector('input[name="delivery-option"]:checked');
-
-        if (firstName === '' || lastName === '' || unitNumber === '' || orderMessage.trim() === '' || !deliveryOption) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        const deliveryText = deliveryOption.value === "Pickup" ? "Pickup" : "Delivery";
-        const messageBody = `Order Details:\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\nOrder: ${orderMessage}\nOption: ${deliveryText}\nTotal: $${totalPrice.toFixed(2)}\nPayment: Cash only`;
-        const smsLink = `sms:?body=${encodeURIComponent(messageBody)}`;
-        window.location.href = smsLink;
-
-        // Reset the cart
-        cart = [];
-        totalPrice = 0;
-        updateCart();
-        document.getElementById('order-message').value = '';
-        document.getElementById('first-name').value = '';
-        document.getElementById('last-name').value = '';
-        document.getElementById('unit-number').value = '';
-        document.querySelector('input[name="delivery-option"]:checked').checked = false;
-    }
-</script>
-
-</body>
-</html>
+        <p>Green tea has a rich history that dates back over 5,000 years in China. Initially used for medicinal purposes, it became popular as a beverage during the Tang Dynasty (618-907 AD). The practice of drinking green tea spread to Japan in the early 9th century, where it was refined into a cultural ritual, especially during t
