@@ -138,16 +138,28 @@
         <div class="menu-item">
             <span>Green Tea</span>
             <span class="price">$4.00</span>
+            <div>
+                <label><input type="radio" name="sugar-green" value="Sugar"> Sugar</label>
+                <label><input type="radio" name="sugar-green" value="No Sugar"> No Sugar</label>
+            </div>
             <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
             <span class="price">$6.00</span>
+            <div>
+                <label><input type="radio" name="sugar-ginger" value="Sugar"> Sugar</label>
+                <label><input type="radio" name="sugar-ginger" value="No Sugar"> No Sugar</label>
+            </div>
             <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
             <span class="price">$6.00</span>
+            <div>
+                <label><input type="radio" name="sugar-honey" value="Sugar"> Sugar</label>
+                <label><input type="radio" name="sugar-honey" value="No Sugar"> No Sugar</label>
+            </div>
             <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
         </div>
     </section>
@@ -215,7 +227,9 @@
     let totalPrice = 0;
 
     function addToCart(item, price) {
-        cart.push({ item, price });
+        const sugarPreference = document.querySelector(`input[name="sugar-${item.replace(/\s+/g, '-').toLowerCase()}"]:checked`);
+        const sugarText = sugarPreference ? ` (${sugarPreference.value})` : '';
+        cart.push({ item: item + sugarText, price });
         totalPrice += price;
         updateCart();
     }
@@ -239,10 +253,9 @@
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
-        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
         const orderItems = cart.map(item => `${item.item} - $${item.price.toFixed(2)}`).join('\n');
-        const orderDetails = `Order Details:\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\nSugar Preference: ${sugarPreference}\n\nItems:\n${orderItems}\n\nTotal: $${totalPrice.toFixed(2)}`;
+        const orderDetails = `Order Details:\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\n\nItems:\n${orderItems}\n\nTotal: $${totalPrice.toFixed(2)}`;
 
         const encodedMessage = encodeURIComponent(orderDetails);
         const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
