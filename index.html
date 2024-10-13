@@ -16,7 +16,7 @@
             background-color: #4a8c4a;
             color: white;
             text-align: center;
-            padding: 0.5rem 0;
+            padding: 0.4rem 0; /* Reduced margin */
         }
         h1 {
             font-family: 'Playfair Display', serif;
@@ -223,6 +223,8 @@
             <div>
                 <h3>We Value Your Feedback!</h3>
                 <p>Let us know how we did! Your thoughts help us improve.</p>
+                <label for="review-email">Email:</label>
+                <input type="text" id="review-email" required><br>
                 <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea><br>
                 <button class="review-button" onclick="submitReview()">Submit Review</button>
                 <p id="review-confirmation" style="color: green; display: none;">Thank you for your feedback!</p>
@@ -232,7 +234,7 @@
 
     <div class="qr-code">
         <h3>Scan to Visit Our Website</h3>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://yourwebsite.com&size=200x200" alt="QR Code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=200x200" alt="QR Code">
     </div>
 </div>
 
@@ -330,16 +332,18 @@
     }
 
     function submitReview() {
+        const reviewEmail = document.getElementById('review-email').value.trim();
         const reviewMessage = document.getElementById('review-message').value.trim();
 
-        if (reviewMessage === '') {
-            alert('Please enter your feedback.');
+        if (reviewEmail === '' || reviewMessage === '') {
+            alert('Please enter your email and feedback.');
             return;
         }
 
         // Display confirmation message
         document.getElementById('review-confirmation').style.display = 'block';
         document.getElementById('review-message').value = ''; // Clear the review textarea
+        document.getElementById('review-email').value = ''; // Clear the email input
     }
 </script>
 
