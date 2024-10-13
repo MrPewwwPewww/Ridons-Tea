@@ -17,7 +17,7 @@
             color: white;
             text-align: center;
             padding: 0.5rem 0;
-            margin-bottom: 10px; /* Adjusted green margin */
+            margin-bottom: 10px;
         }
         nav {
             margin: 10px 0;
@@ -146,11 +146,11 @@
             <h3>Order Confirmation</h3>
             <p>Please fill out your details. Only cash payment accepted upon pickup. <strong>No refunds available for orders.</strong></p>
             <label for="first-name">First Name:</label>
-            <input type="text" id="first-name" required><br>
+            <input type="text" id="first-name" required>
             <label for="last-name">Last Name:</label>
-            <input type="text" id="last-name" required><br>
+            <input type="text" id="last-name" required>
             <label for="unit-number">Unit Number:</label>
-            <input type="text" id="unit-number" required><br>
+            <input type="text" id="unit-number" required>
             <div>
                 <label>Sugar Preference:</label>
                 <input type="radio" name="sugar" value="Sugar" required> Sugar
@@ -186,7 +186,7 @@
 
     <div id="qr-code">
         <h3>Scan to Visit Our Website</h3>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=150x150" alt="QR Code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=150x150" alt="QR Code linking to Ridon's Green Tea website">
         <button class="review-button" onclick="promptReview()">Leave a Review</button>
     </div>
 </main>
@@ -220,21 +220,7 @@
         updateCart();
     }
 
-    function validateForm() {
-        const firstName = document.getElementById('first-name').value.trim();
-        const lastName = document.getElementById('last-name').value.trim();
-        const unitNumber = document.getElementById('unit-number').value.trim();
-
-        if (!firstName || !lastName || !unitNumber) {
-            alert("Please fill out all fields.");
-            return false;
-        }
-        return true;
-    }
-
     function sendOrder() {
-        if (!validateForm()) return;
-
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
@@ -245,28 +231,18 @@
         cart.forEach(cartItem => {
             orderDetails += `${cartItem.item} - $${cartItem.price.toFixed(2)}\n`;
         });
-        orderDetails += `\nName: ${firstName} ${lastName}\n`;
-        orderDetails += `Unit: ${unitNumber}\n`;
-        orderDetails += `Sugar Preference: ${sugarPreference}\n`;
-        orderDetails += `Total: $${totalPrice.toFixed(2)}\n`;
-        orderDetails += `Payment: Cash only`;
+        orderDetails += `\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\nSugar Preference: ${sugarPreference}\nTotal: $${totalPrice.toFixed(2)}`;
 
-        const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(orderDetails)}`;
-        window.open(whatsappLink);
+        // Encode the order message for WhatsApp
+        const encodedMessage = encodeURIComponent(orderDetails);
+        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+
+        // Open WhatsApp with the order details
+        window.open(whatsappUrl, '_blank');
     }
 
     function promptReview() {
-        const email = prompt("Please enter your email to leave a review:");
-        const feedback = prompt("Please share your feedback:");
-
-        if (email && feedback) {
-            const reviewBody = `Email: ${email}\nFeedback: ${feedback}`;
-            const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=Feedback from ${email}&body=${encodeURIComponent(reviewBody)}`;
-            window.location.href = mailtoLink;
-            alert('Thank you for your review!');
-        } else {
-            alert("Please provide both email and feedback.");
-        }
+        alert("Thank you for your interest! Please leave a review on our website or social media.");
     }
 </script>
 
