@@ -23,6 +23,7 @@
             margin: 10px 0;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
         }
         nav a {
             margin: 0 15px;
@@ -49,6 +50,7 @@
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
         }
         .menu-item span {
             flex-grow: 1;
@@ -85,8 +87,8 @@
         }
         .contact-review {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
         }
         #qr-code {
             margin-top: 20px;
@@ -96,10 +98,23 @@
         @media (max-width: 600px) {
             nav {
                 flex-direction: column;
+                align-items: center;
             }
             .menu-item {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            .order-form label {
+                display: block;
+                margin-top: 10px;
+            }
+            .order-form input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .review-button {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -226,18 +241,12 @@
         const unitNumber = document.getElementById('unit-number').value.trim();
         const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
 
-        // Build the order details message with cart items
-        let orderDetails = `Order Details:\n`;
-        cart.forEach(cartItem => {
-            orderDetails += `${cartItem.item} - $${cartItem.price.toFixed(2)}\n`;
-        });
-        orderDetails += `\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\nSugar Preference: ${sugarPreference}\nTotal: $${totalPrice.toFixed(2)}`;
+        const orderItems = cart.map(item => `${item.item} - $${item.price.toFixed(2)}`).join('\n');
+        const orderDetails = `Order Details:\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\nSugar Preference: ${sugarPreference}\n\nItems:\n${orderItems}\n\nTotal: $${totalPrice.toFixed(2)}`;
 
-        // Encode the order message for WhatsApp
         const encodedMessage = encodeURIComponent(orderDetails);
         const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
 
-        // Open WhatsApp with the order details
         window.open(whatsappUrl, '_blank');
     }
 
