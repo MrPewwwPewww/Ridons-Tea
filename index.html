@@ -107,9 +107,12 @@
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
-            padding: 20px;
+            padding: 30px; /* Increased padding */
             border: 1px solid #888;
-            width: 80%;
+            width: 90%;
+            max-width: 500px; /* Set a max width for better appearance */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow */
         }
         .close {
             color: #aaa;
@@ -122,6 +125,30 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px; /* Spacing for labels */
+        }
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px; /* Rounded edges */
+            margin-bottom: 15px; /* Spacing below inputs */
+        }
+        button[type="submit"] {
+            background-color: #4a8c4a;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%; /* Full width button */
+        }
+        button[type="submit"]:hover {
+            background-color: #3a6c3a; /* Darker on hover */
         }
     </style>
 </head>
@@ -166,12 +193,12 @@
             <h3>Order Confirmation</h3>
             <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
             <label for="first-name">First Name:</label>
-            <input type="text" id="first-name" required><br>
+            <input type="text" id="first-name" required>
             <label for="last-name">Last Name:</label>
-            <input type="text" id="last-name" required><br>
+            <input type="text" id="last-name" required>
             <label for="unit-number">Unit Number:</label>
-            <input type="text" id="unit-number" required><br>
-            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details..."></textarea><br>
+            <input type="text" id="unit-number" required>
+            <textarea id="order-message" rows="4" placeholder="Enter your order details..."></textarea>
             
             <!-- Promo code applied here -->
             <div class="promo-code">
@@ -212,10 +239,12 @@
         <span class="close" onclick="closeReviewModal()">&times;</span>
         <h2>Leave a Review</h2>
         <label for="review-email">Email:</label>
-        <input type="email" id="review-email" required><br>
+        <input type="email" id="review-email" placeholder="Enter your email" required>
+        
         <label for="review-message">Your Feedback:</label>
-        <textarea id="review-message" rows="4" required></textarea><br>
-        <button onclick="submitReview()">Submit</button>
+        <textarea id="review-message" rows="4" placeholder="Write your review..." required></textarea>
+        
+        <button type="submit" onclick="submitReview()">Submit Review</button>
     </div>
 </div>
 
