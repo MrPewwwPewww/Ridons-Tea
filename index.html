@@ -29,8 +29,6 @@
         }
         .container {
             padding: 20px;
-            max-width: 600px;
-            margin: auto;
         }
         h2 {
             color: #4a8c4a;
@@ -85,20 +83,57 @@
         .contact-review {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
-        .qr-code {
-            margin-top: 20px;
-            text-align: center;
+        .promo-code {
+            margin-top: 10px;
         }
+
         /* Mobile responsiveness */
         @media (max-width: 600px) {
-            .menu-item {
-                flex-direction: column;
-                align-items: flex-start;
+            header {
+                padding: 0.5rem;
             }
-            .menu-item span {
-                margin-bottom: 5px;
+            nav {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 10px 0;
+            }
+            nav a {
+                margin: 5px 0;
+                font-size: 16px; /* Increase touch target size */
+            }
+            .container {
+                padding: 10px;
+            }
+            .menu-item,
+            .cart-item,
+            .contact-review {
+                flex-direction: column; /* Stack items */
+                align-items: flex-start; /* Align items to start */
+            }
+            .menu-item span,
+            .cart-item span {
+                width: 100%; /* Full width for text */
+                text-align: left; /* Align text to the left */
+                margin-bottom: 5px; /* Space between items */
+            }
+            .menu-item span.price {
+                text-align: right; /* Price aligned right */
+                margin-bottom: 5px; /* Space between items */
+            }
+            footer {
+                padding: 15px 0; /* More padding for better touch */
+            }
+            .review-button {
+                width: 100%; /* Full width for button */
+            }
+            input[type="text"],
+            textarea {
+                width: 100%; /* Full width for inputs */
+                padding: 10px; /* Better touch target */
+                margin-bottom: 10px; /* Space between inputs */
             }
         }
     </style>
@@ -106,7 +141,7 @@
 <body>
 
 <header>
-    <h1 style="font-family: 'Playfair Display', serif;">Welcome to Ridon's Green Tea</h1>
+    <h1>Welcome to Ridon's Green Tea</h1>
     <nav>
         <a href="#menu">Menu</a>
         <a href="#about">About Us</a>
@@ -140,7 +175,7 @@
         <h2>Your Shopping Cart</h2>
         <div id="cart-items"></div>
         <p>Total: $<span id="total-price">0.00</span></p>
-        
+
         <div class="order-form">
             <h3>Order Confirmation</h3>
             <p>Please fill out your details. Only cash payment accepted upon pickup.</p>
@@ -151,12 +186,11 @@
             <label for="unit-number">Unit Number:</label>
             <input type="text" id="unit-number" required><br>
             <label>Sugar Preference:</label>
-            <label><input type="radio" name="sugar" value="sugar" checked> Sugar</label>
-            <label><input type="radio" name="sugar" value="no-sugar"> No Sugar</label><br>
-            <textarea id="order-message" rows="4" cols="50" placeholder="Enter your order details (optional)..."></textarea><br>
+            <label><input type="radio" name="sugar" value="Sugar" checked> Sugar</label>
+            <label><input type="radio" name="sugar" value="No Sugar"> No Sugar</label><br>
+            <textarea id="order-message" rows="4" placeholder="Enter your order details..."></textarea><br>
             <button onclick="sendOrder()">Send Order via SMS</button>
             <button onclick="sendOrderViaWhatsApp()">Send Order via WhatsApp</button>
-            <p style="font-weight: bold; margin-top: 10px;">Tips are appreciated!</p>
         </div>
     </section>
 
@@ -181,16 +215,12 @@
             <div>
                 <h3>We Value Your Feedback!</h3>
                 <p>Let us know how we did! Your thoughts help us improve.</p>
-                <textarea id="review-message" rows="4" cols="30" placeholder="Share your thoughts..." required></textarea><br>
+                <textarea id="review-message" rows="4" placeholder="Share your thoughts..." required></textarea><br>
                 <button class="review-button" onclick="submitReview()">Submit Review</button>
+                <p id="review-confirmation" style="color: green; display: none;">Thank you for your feedback!</p>
             </div>
         </div>
     </section>
-
-    <div class="qr-code">
-        <h3>Scan to Visit Our Website</h3>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea&size=200x200" alt="QR Code">
-    </div>
 </div>
 
 <footer>
@@ -226,28 +256,26 @@
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const orderMessage = document.getElementById('order-message').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '') {
-            alert('Please fill in your name and unit number.');
+            alert('Please fill in all required fields.');
             return;
         }
 
-        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage || 'N/A'}
+            Order Details: ${orderMessage}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
-            Tips are appreciated!
         `;
 
         const smsLink = `sms:?body=${encodeURIComponent(messageBody)}`;
         window.location.href = smsLink;
-
         resetOrder();
     }
 
@@ -255,28 +283,26 @@
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const unitNumber = document.getElementById('unit-number').value.trim();
+        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const orderMessage = document.getElementById('order-message').value;
 
         if (firstName === '' || lastName === '' || unitNumber === '') {
-            alert('Please fill in your name and unit number.');
+            alert('Please fill in all required fields.');
             return;
         }
 
-        const sugarPreference = document.querySelector('input[name="sugar"]:checked').value;
         const messageBody = `
             Order Details:
             Name: ${firstName} ${lastName}
             Unit: ${unitNumber}
             Sugar Preference: ${sugarPreference}
-            Order Details: ${orderMessage || 'N/A'}
+            Order Details: ${orderMessage}
             Total: $${totalPrice.toFixed(2)}
             Payment: Cash only
-            Tips are appreciated!
         `;
 
         const whatsappLink = `https://wa.me/?text=${encodeURIComponent(messageBody)}`;
         window.open(whatsappLink, '_blank');
-
         resetOrder();
     }
 
@@ -294,15 +320,12 @@
         const reviewMessage = document.getElementById('review-message').value.trim();
 
         if (reviewMessage === '') {
-            alert('Please enter your feedback before submitting.');
+            alert('Please enter your feedback.');
             return;
         }
 
-        const reviewSubject = "New Review for Ridon's Green Tea";
-        const mailtoLink = `mailto:ridon_chaar150@hotmail.com?subject=${encodeURIComponent(reviewSubject)}&body=${encodeURIComponent(reviewMessage)}`;
-        window.location.href = mailtoLink;
-
-        document.getElementById('review-message').value = '';
+        document.getElementById('review-confirmation').style.display = 'block';
+        document.getElementById('review-message').value = ''; // Clear the review textarea
     }
 </script>
 
