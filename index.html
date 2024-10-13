@@ -27,6 +27,9 @@
             text-decoration: none;
             font-weight: bold;
         }
+        nav a:hover {
+            text-decoration: underline;
+        }
         .container {
             padding: 20px;
         }
@@ -88,6 +91,22 @@
         .promo-code {
             margin-top: 10px;
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .menu-item button {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,23 +122,23 @@
     </nav>
 </header>
 
-<div class="container">
+<main class="container">
     <section id="menu">
         <h2>Our Tea Selection</h2>
         <div class="menu-item">
             <span>Green Tea</span>
             <span class="price">$4.00</span>
-            <button onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
+            <button aria-label="Add Green Tea to cart" onclick="addToCart('Green Tea', 4.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Ginger</span>
             <span class="price">$6.00</span>
-            <button onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
+            <button aria-label="Add Green Tea with Ginger to cart" onclick="addToCart('Green Tea with Ginger', 6.00)">Add to Cart</button>
         </div>
         <div class="menu-item">
             <span>Green Tea with Honey</span>
             <span class="price">$6.00</span>
-            <button onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
+            <button aria-label="Add Green Tea with Honey to cart" onclick="addToCart('Green Tea with Honey', 6.00)">Add to Cart</button>
         </div>
     </section>
 
@@ -169,7 +188,7 @@
             <button class="review-button" onclick="promptReview()">Leave a Review</button>
         </div>
     </section>
-</div>
+</main>
 
 <footer>
     <p>&copy; 2024 Ridon's Green Tea. All rights reserved.</p>
@@ -190,15 +209,17 @@
         const cartItems = document.getElementById('cart-items');
         cartItems.innerHTML = '';
         cart.forEach((cartItem, index) => {
-            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button></div>`;
+            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button aria-label="Remove ${cartItem.item} from cart" onclick="removeFromCart(${index})">Remove</button></div>`;
         });
         document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
     function removeFromCart(index) {
-        totalPrice -= cart[index].price;
-        cart.splice(index, 1);
-        updateCart();
+        if (confirm("Are you sure you want to remove this item from the cart?")) {
+            totalPrice -= cart[index].price;
+            cart.splice(index, 1);
+            updateCart();
+        }
     }
 
     function applyPromo() {
@@ -250,6 +271,7 @@
         window.location.href = mailtoLink;
 
         resetOrder();
+        alert("Your order has been sent successfully!"); // Success message
     }
 
     function resetOrder() {
