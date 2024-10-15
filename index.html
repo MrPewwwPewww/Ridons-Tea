@@ -70,19 +70,19 @@
         .order-form {
             margin-top: 20px;
         }
-        .review-button {
+        .feedback-button {
             background-color: #4a8c4a;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 16px;
             display: inline-block;
             text-align: center;
         }
-        .review-button:hover {
+        .feedback-button:hover {
             background-color: #3a6c3a;
         }
         .contact-review {
@@ -112,7 +112,7 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
-            .review-button {
+            .feedback-button {
                 width: 100%;
                 text-align: center;
             }
@@ -180,6 +180,7 @@
             <input type="text" id="unit-number" required>
             <div class="contact-review">
                 <button onclick="sendOrder()">Send Order via WhatsApp</button>
+                <button class="feedback-button" onclick="sendFeedback()">Send Feedback via WhatsApp</button>
             </div>
             <p style="color: #4a8c4a;">Tips are appreciated!</p>
         </div>
@@ -209,7 +210,6 @@
     <div id="qr-code">
         <h3>Scan to Visit Our Website</h3>
         <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://ridonec.github.io/Ridons-Tea/&size=150x150" alt="QR Code linking to Ridon's Green Tea website">
-        <button class="review-button" onclick="promptReview()">Leave a Review</button>
     </div>
 </main>
 
@@ -228,44 +228,43 @@
             return;
         }
         const sugarText = sugarPreference.value === 'No Sugar' ? ' (No Sugar)' : ' (Sugar)';
-        cart.push({ item: item + sugarText, price });
+        cart.push({ item: item + sugarText, price: price });
         totalPrice += price;
-        updateCart();
+        updateCartDisplay();
     }
 
-    function updateCart() {
-        const cartItems = document.getElementById('cart-items');
-        cartItems.innerHTML = '';
+    function updateCartDisplay() {
+        const cartItemsDiv = document.getElementById('cart-items');
+        cartItemsDiv.innerHTML = '';
         cart.forEach((cartItem, index) => {
-            cartItems.innerHTML += `<div class="cart-item">${cartItem.item} - $${cartItem.price.toFixed(2)} <button onclick="removeFromCart(${index})">Remove</button></div>`;
+            cartItemsDiv.innerHTML += `<div class="cart-item"><span>${cartItem.item}</span><span>$${cartItem.price.toFixed(2)}</span></div>`;
         });
         document.getElementById('total-price').innerText = totalPrice.toFixed(2);
     }
 
-    function removeFromCart(index) {
-        totalPrice -= cart[index].price;
-        cart.splice(index, 1);
-        updateCart();
-    }
-
     function sendOrder() {
-        const firstName = document.getElementById('first-name').value.trim();
-        const lastName = document.getElementById('last-name').value.trim();
-        const unitNumber = document.getElementById('unit-number').value.trim();
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const unitNumber = document.getElementById('unit-number').value;
 
-        const orderItems = cart.map(item => `${item.item} - $${item.price.toFixed(2)}`).join('\n');
-        const orderDetails = `Order Details:\nName: ${firstName} ${lastName}\nUnit: ${unitNumber}\n\nItems:\n${orderItems}\n\nTotal: $${totalPrice.toFixed(2)}`;
+        const orderDetails = cart.map(item => `${item.item}: $${item.price.toFixed(2)}`).join(', ');
+        const message = `Order from ${firstName} ${lastName}, Unit ${unitNumber}: ${orderDetails}. Total: $${totalPrice.toFixed(2)}`;
 
-        const encodedMessage = encodeURIComponent(orderDetails);
-        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
 
-    function promptReview() {
-        alert("Thank you for your interest! Please leave a review on our website or social media.");
+    function sendFeedback() {
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const unitNumber = document.getElementById('unit-number').value;
+
+        const orderDetails = cart.map(item => `${item.item}: $${item.price.toFixed(2)}`).join(', ');
+        const message = `Feedback from ${firstName} ${lastName}, Unit ${unitNumber}. Order: ${orderDetails}.`;
+
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
     }
 </script>
-
 </body>
 </html>
