@@ -264,7 +264,7 @@
         const orderDetails = cart.map(item => `${item.item}: $${item.price.toFixed(2)}`).join(', ');
         const message = `Order from ${firstName} ${lastName}, Unit ${unitNumber}: ${orderDetails}. Total: $${totalPrice.toFixed(2)}`;
         
-        const whatsappNumber = '15555555555'; // Replace with your actual WhatsApp number
+        const whatsappNumber = '16476246404'; // Replace with your actual WhatsApp number
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
