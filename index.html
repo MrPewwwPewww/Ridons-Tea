@@ -70,19 +70,19 @@
         .order-form {
             margin-top: 20px;
         }
-        .feedback-button {
+        .review-button {
             background-color: #4a8c4a;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
             font-size: 16px;
             display: inline-block;
             text-align: center;
         }
-        .feedback-button:hover {
+        .review-button:hover {
             background-color: #3a6c3a;
         }
         .contact-review {
@@ -112,7 +112,7 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
-            .feedback-button {
+            .review-button {
                 width: 100%;
                 text-align: center;
             }
@@ -212,7 +212,7 @@
     </div>
 
     <div class="contact-review">
-        <button class="feedback-button" onclick="sendFeedback()">Send Feedback via WhatsApp</button>
+        <button class="review-button" onclick="sendFeedback()">Leave Feedback via WhatsApp</button>
     </div>
 </main>
 
@@ -264,7 +264,7 @@
         const orderDetails = cart.map(item => `${item.item}: $${item.price.toFixed(2)}`).join(', ');
         const message = `Order from ${firstName} ${lastName}, Unit ${unitNumber}: ${orderDetails}. Total: $${totalPrice.toFixed(2)}`;
         
-        const whatsappNumber = 'YOUR_WHATSAPP_NUMBER'; // Replace with your WhatsApp number
+        const whatsappNumber = '15555555555'; // Replace with your actual WhatsApp number
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
@@ -277,7 +277,7 @@
         const orderDetails = cart.map(item => `${item.item}: $${item.price.toFixed(2)}`).join(', ');
         const message = `Feedback from ${firstName} ${lastName}, Unit ${unitNumber}. Order: ${orderDetails}.`;
 
-        const whatsappNumber = '16476246404'; // Replace with your WhatsApp number
+        const whatsappNumber = '16476246404'; // Replace with your actual WhatsApp number
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
