@@ -75,7 +75,16 @@
         .cart-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item span {
+            flex-grow: 1;
+        }
+        .cart-item span.price {
+            min-width: 50px;
+            text-align: right;
         }
         .order-form {
             margin-top: 20px;
@@ -222,7 +231,9 @@
     </div>
 
     <div class="contact-review">
-        <button class="review-button" onclick="sendFeedback()">Leave Feedback via WhatsApp</button>
+        <h3>Feedback</h3>
+        <p>If you would like to leave feedback about your experience, please click the button below:</p>
+        <button class="review-button" onclick="sendFeedback()">Send Feedback via WhatsApp</button>
     </div>
 </main>
 
@@ -253,7 +264,7 @@
             cartItemsDiv.innerHTML += `
                 <div class="cart-item">
                     <span>${cartItem.item}</span>
-                    <span>$${cartItem.price.toFixed(2)}</span>
+                    <span class="price">$${cartItem.price.toFixed(2)}</span>
                     <button onclick="removeFromCart(${index})">Remove</button>
                 </div>`;
         });
